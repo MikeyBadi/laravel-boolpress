@@ -8,6 +8,18 @@
             :post="post"
             />
         </div>
+        <button @click="getApi(pagination.current -1)"
+        :disabled="pagination.current === 1"><=</button>
+
+        <button
+        v-for="ind in pagination.last"
+        :key="ind"
+        @click="getApi(ind)"
+        :disabled="pagination.current === ind">{{ind}}</button>
+
+        <button @click="getApi(pagination.current +1)"
+        :disabled="pagination.current === pagination.last">=></button>
+
     </div>
 </template>
 
@@ -22,23 +34,33 @@ data() {
     return {
         urlApi: 'http://127.0.0.1:8000/api/posts',
         posts: null,
+        pagination:{
+            current: null,
+            last:null,
+        }
     }
 },
 methods:{
-    getApi(){
-        axios.get(this.urlApi)
+    getApi(page){
+        axios.get(this.urlApi + '?page=' + page)
         .then(res=>{
-            this.posts = res.data
+            this.posts = res.data.data
+            this.pagination ={
+                current: res.data.current_page,
+                last: res.data.last_page
+            }
             console.log(this.posts);
         })
     }
 },
 mounted() {
-    this.getApi();
+    this.getApi(1);
 },
 }
 </script>
 
 <style lang="scss" scoped>
-
+    button{
+        padding: 5px;
+    }
 </style>
