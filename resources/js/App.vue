@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h1>Vue + Laravel first welcome page</h1>
+        <HeaderComp/>
+        <!-- <h1>Vue + Laravel first welcome page</h1>
         <ul>
             <li
             v-for="post in posts"
@@ -9,41 +10,44 @@
             <h3>{{post.title}}</h3>
             <p>{{post.content}}</p>
             </li>
-        </ul>
+        </ul> -->
+    <router-view></router-view>
     </div>
 
 </template>
 
 <script>
+
+import HeaderComp from './components/partials/HeaderComp.vue'
 export default {
     name: 'App',
+    components:{
+        HeaderComp
+    },
     data(){
+
         return{
 
-            apiUrl: 'http://127.0.0.1:8000/api/posts',
-            posts: null,
         }
     },
 
     methods:{
 
-        getApi(){
-            axios.get(this.apiUrl)
-            .then(res=>{
-
-                this.posts = res.data
-                console.log(this.post);
-
-            })
-        }
     },
     mounted() {
-        this.getApi();
-        console.log('axios');
+
+
     },
 }
 </script>
 
-<style>
+<style lang="scss">
+
+    *{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
 </style>
