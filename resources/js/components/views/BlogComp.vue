@@ -1,6 +1,11 @@
 <template>
     <div>
         <h1>Blog</h1>
+
+        <LoaderComp v-if="!posts"/>
+
+    <div v-else>
+
         <div class="post-cont">
             <PostComp
             v-for="post in posts"
@@ -9,7 +14,7 @@
             />
         </div>
         <button @click="getApi(pagination.current -1)"
-        :disabled="pagination.current === 1"><=</button>
+        :disabled="pagination.current === 1"> .. </button>
 
         <button
         v-for="ind in pagination.last"
@@ -20,19 +25,24 @@
         <button @click="getApi(pagination.current +1)"
         :disabled="pagination.current === pagination.last">=></button>
 
+        </div>
     </div>
 </template>
 
 <script>
 import PostComp from '../partials/PostComp.vue'
+import LoaderComp from '../partials/LoaderComp'
+import {urlApi} from '../../data/config'
+
 export default {
 name: 'BlogComp',
 components:{
-    PostComp
+    PostComp,
+    LoaderComp
 },
 data() {
     return {
-        urlApi: 'http://127.0.0.1:8000/api/posts',
+        urlApi,
         posts: null,
         pagination:{
             current: null,
@@ -42,6 +52,7 @@ data() {
 },
 methods:{
     getApi(page){
+        this.posts = null;
         axios.get(this.urlApi + '?page=' + page)
         .then(res=>{
             this.posts = res.data.data

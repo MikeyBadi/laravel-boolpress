@@ -13,4 +13,10 @@ class Pagecontroller extends Controller
 
         return response()->json($post);
     }
+
+    public function show($slug){
+        $post = Post::where('slug',$slug)->with('tags')->first();
+
+        return response()->json($post);
+    }
 }
